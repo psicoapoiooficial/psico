@@ -1,0 +1,343 @@
+/* --- GERAL E VARIÁVEIS --- */
+:root {
+    --primary-blue: #2980b9;
+    --secondary-blue: #3498db;
+    --light-bg: #ecf0f1;
+    --dark-text: #2c3e50;
+    --light-text: #ffffff;
+    --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--light-bg);
+    color: var(--dark-text);
+}
+
+/* --- ESTRUTURA PRINCIPAL DO DASHBOARD --- */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    /* Padrão para mobile */
+    min-height: 100vh;
+}
+
+.sidebar {
+    background-color: var(--light-text);
+    padding: 1rem;
+    box-shadow: var(--shadow);
+}
+
+.main-title {
+    color: var(--primary-blue);
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    /* Permite que os itens quebrem a linha em telas pequenas */
+}
+
+.sidebar ul li a {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    margin: 0.2rem;
+    color: var(--dark-text);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.sidebar ul li a i {
+    margin-right: 0.5rem;
+    width: 20px;
+    text-align: center;
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li a.active {
+    background-color: var(--primary-blue);
+    color: var(--light-text);
+}
+
+.content {
+    flex-grow: 1;
+    padding: 2rem;
+}
+
+.page {
+    display: none;
+    /* Esconde todas as páginas por padrão */
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.page.active {
+    display: block;
+    /* Mostra apenas a página ativa */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (min-width: 768px) {
+    .dashboard-container {
+        flex-direction: row;
+        /* Layout lado a lado em telas maiores */
+    }
+
+    .sidebar {
+        min-width: 250px;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sidebar ul {
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    .sidebar ul li a span {
+        display: inline;
+        /* Mostra o texto ao lado do ícone */
+    }
+}
+
+/* --- ESTILOS DOS COMPONENTES --- */
+
+/* 1. Respiração */
+.breathing-circle-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    position: relative;
+    margin-top: 2rem;
+}
+
+.breathing-circle {
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(135deg, var(--secondary-blue), var(--primary-blue));
+    border-radius: 50%;
+    transition: transform 4s ease-in-out;
+}
+
+.breathing-text {
+    position: absolute;
+    color: var(--light-text);
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Animação da Respiração */
+.breathing.grow {
+    animation: grow 4s ease-in-out forwards;
+}
+
+.breathing.shrink {
+    animation: shrink 6s ease-in-out forwards 1s;
+    /* Duração maior para expirar */
+}
+
+@keyframes grow {
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(1.8);
+    }
+}
+
+@keyframes shrink {
+    from {
+        transform: scale(1.8);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}
+
+/* 2. Bíblia */
+.bible-verse-container {
+    background: var(--light-text);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+#daily-verse-text {
+    font-size: 1.2rem;
+    font-style: italic;
+}
+
+#daily-verse-ref {
+    display: block;
+    margin-top: 1rem;
+    font-weight: bold;
+}
+
+button {
+    background-color: var(--primary-blue);
+    color: var(--light-text);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 5px;
+}
+
+button:hover {
+    background-color: #2c3e50;
+}
+
+.bible-popups {
+    margin-top: 1rem;
+}
+
+/* 3. Diário */
+#journal-textarea {
+    width: 100%;
+    height: 60vh;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    resize: vertical;
+}
+
+/* 4. Calendário */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+.calendar-day {
+    background-color: var(--light-text);
+    padding: 1rem;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: var(--shadow);
+}
+
+.calendar-day:hover {
+    transform: translateY(-5px);
+    background-color: var(--secondary-blue);
+    color: var(--light-text);
+}
+
+/* 5. Checklist */
+.checklist {
+    list-style: none;
+}
+
+.checklist li {
+    background-color: #fff;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.checklist li input {
+    margin-right: 1rem;
+}
+
+.checklist li.completed {
+    text-decoration: line-through;
+    color: #95a5a6;
+}
+
+/* 6. Música */
+#playlist-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#playlist-player-container iframe {
+    width: 100%;
+    height: 380px;
+    border: none;
+    border-radius: 12px;
+    margin-top: 1rem;
+}
+
+/* --- MODAL / POP-UP --- */
+.modal-container {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+    animation: slideIn 0.3s;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 2rem;
+    cursor: pointer;
+}
