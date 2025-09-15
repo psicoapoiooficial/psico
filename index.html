@@ -60,10 +60,43 @@
             </section>
 
             <section id="diario" class="page">
-                <h2>Meu Diário</h2>
-                <p>Um espaço seguro para seus pensamentos. Tudo fica salvo no seu navegador.</p>
-                <textarea id="journal-textarea" placeholder="Querido diário..."></textarea>
+                <div class="diary-header">
+                    <h2 class="diary-title">Meu Diário</h2>
+                    <p class="diary-date" id="diary-date-display"></p>
+                </div>
+            
+                <div class="mood-tracker-container">
+                    <h3>Como você está se sentindo hoje?</h3>
+                    <div class="mood-options">
+                        <div class="mood-option" data-mood="Feliz">
+                            <span class="emoji">😊</span>
+                            <p>Feliz</p>
+                        </div>
+                        <div class="mood-option" data-mood="Calmo">
+                            <span class="emoji">😌</span>
+                            <p>Calmo</p>
+                        </div>
+                        <div class="mood-option" data-mood="Ansioso">
+                            <span class="emoji">😟</span>
+                            <p>Ansioso</p>
+                        </div>
+                        <div class="mood-option" data-mood="Triste">
+                            <span class="emoji">😢</span>
+                            <p>Triste</p>
+                        </div>
+                        <div class="mood-option" data-mood="Irritado">
+                            <span class="emoji">😠</span>
+                            <p>Irritado</p>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="journal-entry">
+                    <input type="text" id="journal-title-input" placeholder="Dê um título para sua anotação...">
+                    <textarea id="journal-textarea" placeholder="Querido diário..."></textarea>
+                </div>
             </section>
+
 
             <section id="calendario" class="page">
                 <h2>Calendário do Bem</h2>
@@ -91,7 +124,7 @@
 
     <div id="modal" class="modal-container">
         <div class="modal-content">
-            <span class="close-btn">&times;</span>
+            <span class="close-btn">×</span>
             <h3 id="modal-title">Título do Modal</h3>
             <p id="modal-text">Texto do modal...</p>
         </div>
