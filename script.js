@@ -6,42 +6,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
-            // Verifica se o link DEVE abrir em uma nova aba
-            if (link.getAttribute('target') === '_blank') {
-                // Se sim, não faz nada aqui; o navegador cuidará disso.
-                // O preventDefault() não é necessário para esses links.
-                return; 
+            // Verifica se o link é para abrir em outra aba (target="_blank")
+            // ou se é um link externo que não deve ser interceptado pelo JS
+            if (link.getAttribute('target') === '_blank' || !link.getAttribute('href').startsWith('#')) {
+                // Se for para abrir em outra aba ou for um link externo sem '#' no href,
+                // apenas permite o comportamento padrão do navegador.
+                return;
             }
 
-            // Se o link NÃO é para abrir em nova aba (target="_blank"), 
-            // então aplicamos o comportamento de navegação interna.
+            // Para links internos (que começam com #), impedimos o comportamento padrão
+            // e fazemos a navegação gerenciada pelo JavaScript.
             e.preventDefault();
 
-            // Remove a classe 'active' de todos os links e páginas
+            // Remove a classe 'active' de todos os links de navegação
             navLinks.forEach(l => l.classList.remove('active'));
+            // Remove a classe 'active' de todas as páginas/seções
             pages.forEach(p => p.classList.remove('active'));
 
-            // Adiciona a classe 'active' ao link clicado e à página correspondente
+            // Adiciona a classe 'active' ao link clicado
             link.classList.add('active');
+
+            // Encontra a página/seção de destino e adiciona a classe 'active' a ela
             const targetPage = document.querySelector(link.getAttribute('href'));
-            if (targetPage) { // Garante que o elemento de página existe
+            if (targetPage) { // Verifica se o elemento de destino realmente existe
                 targetPage.classList.add('active');
             }
         });
     });
 
     // --- 1. MÓDULO DE RESPIRAÇÃO ---
-    // ... (todo o resto do seu código JavaScript permanece igual) ...
     const circleContainer = document.querySelector('.breathing-circle-container');
     const circle = document.querySelector('.breathing-circle');
     const breathText = document.querySelector('.breathing-text');
     let isBreathing = false;
 
-    circleContainer.addEventListener('click', () => {
-        if (!isBreathing) {
-            startBreathing();
-        }
-    });
+    if (circleContainer) { // Verifica se o elemento existe antes de adicionar o listener
+        circleContainer.addEventListener('click', () => {
+            if (!isBreathing) {
+                startBreathing();
+            }
+        });
+    }
 
     function startBreathing() {
         isBreathing = true;
@@ -79,12 +84,16 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     function getRandomVerse() {
-        const randomIndex = Math.floor(Math.random() * bibleVerses.length);
-        verseText.textContent = `"${bibleVerses[randomIndex].text}"`;
-        verseRef.textContent = `- ${bibleVerses[randomIndex].ref}`;
+        if (verseText && verseRef) { // Verifica se os elementos existem
+            const randomIndex = Math.floor(Math.random() * bibleVerses.length);
+            verseText.textContent = `"${bibleVerses[randomIndex].text}"`;
+            verseRef.textContent = `- ${bibleVerses[randomIndex].ref}`;
+        }
     }
 
-    if (generateVerseBtn) generateVerseBtn.addEventListener('click', getRandomVerse);
+    if (generateVerseBtn) { // Verifica se o botão existe
+        generateVerseBtn.addEventListener('click', getRandomVerse);
+    }
     getRandomVerse(); // Gera um versículo ao carregar a página
 
     // --- MODAL / POP-UP ---
@@ -95,13 +104,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const popupBtns = document.querySelectorAll('.popup-btn');
 
     function openModal(title, text) {
-        modalTitle.textContent = title;
-        modalText.textContent = text;
-        modal.style.display = 'flex';
+        if (modal && modalTitle && modalText) { // Verifica se os elementos do modal existem
+            modalTitle.textContent = title;
+            modalText.textContent = text;
+            modal.style.display = 'flex';
+        }
     }
 
     function closeModal() {
-        modal.style.display = 'none';
+        if (modal) { // Verifica se o modal existe
+            modal.style.display = 'none';
+        }
     }
 
     popupBtns.forEach(btn => {
@@ -109,9 +122,12 @@ document.addEventListener('DOMContentLoaded', () => {
             openModal(btn.dataset.title, btn.dataset.text);
         });
     });
-    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+    if (closeBtn) { // Verifica se o botão de fechar existe
+        closeBtn.addEventListener('click', closeModal);
+    }
     window.addEventListener('click', (e) => {
-        if (e.target == modal) {
+        if (modal && e.target == modal) { // Verifica se o modal existe
             closeModal();
         }
     });
@@ -124,12 +140,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 3.1 - Exibir a data atual
     function displayCurrentDate() {
-        const now = new Date();
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        let formattedDate = now.toLocaleDateString('pt-BR', options);
-        // Coloca a primeira letra do dia da semana em maiúscula
-        formattedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
-        dateDisplay.textContent = formattedDate;
+        if (dateDisplay) { // Verifica se o elemento existe
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            let formattedDate = now.toLocaleDateString('pt-BR', options);
+            // Coloca a primeira letra do dia da semana em maiúscula
+            formattedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+            dateDisplay.textContent = formattedDate;
+        }
     }
     displayCurrentDate();
 
@@ -147,24 +165,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 3.3 - Carregar dados salvos do diário
     function loadJournalData() {
-        journalTextarea.value = localStorage.getItem('journalEntry') || '';
-        journalTitleInput.value = localStorage.getItem('journalTitle') || '';
-        
+        if (journalTextarea) journalTextarea.value = localStorage.getItem('journalEntry') || '';
+        if (journalTitleInput) journalTitleInput.value = localStorage.getItem('journalTitle') || '';
+
         const savedMood = localStorage.getItem('selectedMood');
         if(savedMood) {
             const selectedMoodElement = document.querySelector(`.mood-option[data-mood="${savedMood}"]`);
-            if(selectedMoodElement) selectedMoodElement.classList.add('selected');
+            if (selectedMoodElement) {
+                selectedMoodElement.classList.add('selected');
+            }
         }
     }
     loadJournalData();
 
     // 3.4 - Salvar dados do diário ao digitar
-    if (journalTextarea) journalTextarea.addEventListener('keyup', () => {
-        localStorage.setItem('journalEntry', journalTextarea.value);
-    });
-    if (journalTitleInput) journalTitleInput.addEventListener('keyup', () => {
-        localStorage.setItem('journalTitle', journalTitleInput.value);
-    });
+    if (journalTextarea) {
+        journalTextarea.addEventListener('keyup', () => {
+            localStorage.setItem('journalEntry', journalTextarea.value);
+        });
+    }
+    if (journalTitleInput) {
+        journalTitleInput.addEventListener('keyup', () => {
+            localStorage.setItem('journalTitle', journalTitleInput.value);
+        });
+    }
 
 
     // --- 4. MÓDULO CALENDÁRIO ---
@@ -182,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "Planeje uma refeição saudável."
     ];
 
-    if (calendarGrid) {
+    if (calendarGrid) { // Verifica se o grid do calendário existe
         for (let i = 1; i <= 31; i++) {
             const day = document.createElement('div');
             day.classList.add('calendar-day');
@@ -208,27 +232,30 @@ document.addEventListener('DOMContentLoaded', () => {
     let userChecklist = JSON.parse(localStorage.getItem('userChecklist')) || checklistItems;
 
     function renderChecklist() {
-        if (!checklistList) return; // Sai se o elemento não existir
-        checklistList.innerHTML = '';
-        userChecklist.forEach((item, index) => {
-            const li = document.createElement('li');
-            li.classList.toggle('completed', item.completed);
-            li.innerHTML = `
-                <input type="checkbox" ${item.completed ? 'checked' : ''} data-index="${index}">
-                <label>${item.text}</label>
-            `;
-            checklistList.appendChild(li);
-        });
+        if (checklistList) { // Verifica se a lista do checklist existe
+            checklistList.innerHTML = '';
+            userChecklist.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.classList.toggle('completed', item.completed);
+                li.innerHTML = `
+                    <input type="checkbox" ${item.completed ? 'checked' : ''} data-index="${index}">
+                    <label>${item.text}</label>
+                `;
+                checklistList.appendChild(li);
+            });
+        }
     }
 
-    if (checklistList) checklistList.addEventListener('click', (e) => {
-        if (e.target.type === 'checkbox') {
-            const index = e.target.dataset.index;
-            userChecklist[index].completed = !userChecklist[index].completed;
-            localStorage.setItem('userChecklist', JSON.stringify(userChecklist));
-            renderChecklist();
-        }
-    });
+    if (checklistList) { // Verifica se a lista do checklist existe
+        checklistList.addEventListener('click', (e) => {
+            if (e.target.type === 'checkbox') {
+                const index = e.target.dataset.index;
+                userChecklist[index].completed = !userChecklist[index].completed;
+                localStorage.setItem('userChecklist', JSON.stringify(userChecklist));
+                renderChecklist();
+            }
+        });
+    }
 
     renderChecklist();
 
@@ -239,32 +266,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function loadPlaylist() {
         const savedLink = localStorage.getItem('playlistLink');
-        if (savedLink) {
-            if (playlistInput) playlistInput.value = savedLink;
+        if (savedLink && playlistInput && playerContainer) { // Verifica se os elementos existem
+            playlistInput.value = savedLink;
             embedPlaylist(savedLink);
         }
     }
 
     function embedPlaylist(link) {
-        if (!playerContainer) return; // Sai se o container não existir
-
         let embedUrl = '';
-        if (link.includes('open.spotify.com/playlist')) { // Ajuste para URL Spotify mais comum
-            const playlistId = link.split('/playlist/')[1].split('?')[0]; // Pega o ID correto
-            embedUrl = `https://open.spotify.com/embed/playlist/${playlistId}`;
+        if (link.includes('spotify.com/playlist/')) { // Correção: Spotify links geralmente têm /playlist/
+            const playlistId = link.split('playlist/')[1]?.split('?')[0]; // Pega o ID após /playlist/ e antes de possíveis parâmetros
+            if (playlistId) {
+                // A forma de embedar Spotify pode variar, esta é uma tentativa comum
+                embedUrl = `https://open.spotify.com/embed/playlist/${playlistId}`;
+            }
         } else if (link.includes('youtube.com/playlist')) {
             const listId = new URL(link).searchParams.get('list');
-            embedUrl = `https://www.youtube.com/embed/videoseries?list=${listId}`;
+            if (listId) {
+                embedUrl = `https://www.youtube.com/embed/videoseries?list=${listId}`;
+            }
         }
 
-        if (embedUrl) {
-            playerContainer.innerHTML = `<iframe src="${embedUrl}" width="100%" height="352" frameborder="0" allow="encrypted-media" allowfullscreen></iframe>`;
-        } else {
+        if (embedUrl && playerContainer) {
+            playerContainer.innerHTML = `<iframe src="${embedUrl}" width="100%" height="300" frameborder="0" allow="encrypted-media" allowfullscreen></iframe>`;
+        } else if (playerContainer) {
             playerContainer.innerHTML = `<p>Link inválido ou não suportado. Tente um link de playlist do Spotify ou YouTube.</p>`;
         }
     }
 
-    if (savePlaylistBtn && playlistInput) {
+    if (savePlaylistBtn && playlistInput) { // Verifica se os elementos existem
         savePlaylistBtn.addEventListener('click', () => {
             const link = playlistInput.value;
             if (link) {
