@@ -1,35 +1,35 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- NAVEGAÇÃO PRINCIPAL ---
-    const navLinks = document.querySelectorAll('.nav-link');
+
+    // **** CORREÇÃO DEFINITIVA ****
+    // O seletor agora pega todos os '.nav-link' que NÃO TENHAM a classe '.external-link'.
+    // Assim, os links externos não recebem o event listener e funcionam normalmente.
+    const navLinks = document.querySelectorAll('.nav-link:not(.external-link)');
+    
     const pages = document.querySelectorAll('.page');
 
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
-            
-            // **** CORREÇÃO 3: LÓGICA DO JAVASCRIPT ****
-            // Verifica se o link clicado tem o atributo target="_blank".
-            // Se tiver, o código para aqui (return) e deixa o navegador abrir a nova aba.
-            if (link.getAttribute('target') === '_blank') {
-                return;
-            }
-
-            e.preventDefault(); // Impede o comportamento padrão APENAS para links internos.
+            // Agora não precisamos mais da verificação 'if' aqui dentro.
+            e.preventDefault(); 
 
             // Remove a classe 'active' de todos
             navLinks.forEach(l => l.classList.remove('active'));
+            document.querySelectorAll('.nav-link.external-link').forEach(l => l.classList.remove('active')); // Garante que os externos também percam a classe
             pages.forEach(p => p.classList.remove('active'));
 
             // Adiciona a classe 'active' ao link clicado e à página correspondente
             link.classList.add('active');
             const targetPage = document.querySelector(link.getAttribute('href'));
-            if (targetPage) { // Verifica se a página alvo existe antes de adicionar a classe
+            if (targetPage) { 
                 targetPage.classList.add('active');
             }
         });
     });
 
-    // --- RESTANTE DO SEU CÓDIGO (PERMANECE IGUAL) ---
+    // O restante do seu código permanece exatamente o mesmo
+    // ... (todo o código dos módulos de respiração, bíblia, diário, etc.)
 
     // --- 1. MÓDULO DE RESPIRAÇÃO ---
     const circleContainer = document.querySelector('.breathing-circle-container');
@@ -281,7 +281,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadPlaylist();
 });
-
-
-});
-
