@@ -104,16 +104,55 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- 3. MÓDULO DIÁRIO ---
+    // --- 3. MÓDULO DIÁRIO (ATUALIZADO) ---
     const journalTextarea = document.getElementById('journal-textarea');
+    const journalTitleInput = document.getElementById('journal-title-input');
+    const dateDisplay = document.getElementById('diary-date-display');
+    const moodOptions = document.querySelectorAll('.mood-option');
 
-    // Carregar o diário salvo
-    journalTextarea.value = localStorage.getItem('journalEntry') || '';
+    // 3.1 - Exibir a data atual
+    function displayCurrentDate() {
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        let formattedDate = now.toLocaleDateString('pt-BR', options);
+        // Coloca a primeira letra do dia da semana em maiúscula
+        formattedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+        dateDisplay.textContent = formattedDate;
+    }
+    displayCurrentDate();
 
-    // Salvar no diário ao digitar
+    // 3.2 - Seletor de humor
+    moodOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            // Remove a classe 'selected' de todos
+            moodOptions.forEach(opt => opt.classList.remove('selected'));
+            // Adiciona a classe 'selected' ao clicado
+            option.classList.add('selected');
+            // Salva o humor no localStorage
+            localStorage.setItem('selectedMood', option.dataset.mood);
+        });
+    });
+
+    // 3.3 - Carregar dados salvos do diário
+    function loadJournalData() {
+        journalTextarea.value = localStorage.getItem('journalEntry') || '';
+        journalTitleInput.value = localStorage.getItem('journalTitle') || '';
+        
+        const savedMood = localStorage.getItem('selectedMood');
+        if(savedMood) {
+            document.querySelector(`.mood-option[data-mood="${savedMood}"]`).classList.add('selected');
+        }
+    }
+    loadJournalData();
+
+    // 3.4 - Salvar dados do diário ao digitar
     journalTextarea.addEventListener('keyup', () => {
         localStorage.setItem('journalEntry', journalTextarea.value);
     });
+    journalTitleInput.addEventListener('keyup', () => {
+        localStorage.setItem('journalTitle', journalTitleInput.value);
+    });
+
 
     // --- 4. MÓDULO CALENDÁRIO ---
     const calendarGrid = document.getElementById('calendar-grid');
@@ -192,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function embedPlaylist(link) {
         let embedUrl = '';
-        if (link.includes('spotify.com')) {
+        if (link.includes('spotify.com/playlist')) {
             const playlistId = new URL(link).pathname.split('/').pop();
             embedUrl = `https://open.spotify.com/embed/playlist/${playlistId}`;
         } else if (link.includes('youtube.com/playlist')) {
