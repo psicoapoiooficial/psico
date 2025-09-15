@@ -360,7 +360,9 @@ button:hover {
 
 .mood-options {
     display: flex;
-    justify-content: space-around;
+    justify-content: center; /* Centraliza os emojis */
+    flex-wrap: wrap;         /* PERMITE QUE OS ITENS QUEBREM A LINHA */
+    gap: 15px;               /* Adiciona um espaço entre os emojis */
     text-align: center;
 }
 
@@ -440,3 +442,16 @@ button:hover {
 #journal-textarea:focus {
     outline: none;
 }
+/* Ajustes para celulares pequenos */
+@media (max-width: 400px) {
+    .mood-option .emoji {
+        font-size: 2rem;
+        width: 45px;
+        height: 45px;
+    }
+
+    .mood-option p {
+        font-size: 0.8rem;
+    }
+}
+
