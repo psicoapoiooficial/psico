@@ -358,8 +358,7 @@ button:hover {
     margin-bottom: 1rem;
 }
 
-.mood-options {
-   .mood-options {
+ .mood-options {
     display: flex;
     justify-content: space-between; /* Distribui os emojis uniformemente */
     flex-wrap: nowrap; /* Impede que os emojis quebrem a linha */
