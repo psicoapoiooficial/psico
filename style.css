@@ -442,5 +442,17 @@ button:hover {
 #journal-textarea:focus {
     outline: none;
 }
+/* Ajustes para celulares pequenos */
+@media (max-width: 400px) {
+    .mood-option .emoji {
+        font-size: 2rem;
+        width: 45px;
+        height: 45px;
+    }
+
+    .mood-option p {
+        font-size: 0.8rem;
+    }
+}
 
 
