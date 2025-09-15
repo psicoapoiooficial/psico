@@ -1,37 +1,37 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-   document.addEventListener('DOMContentLoaded', () => {
-
     // --- NAVEGAÇÃO PRINCIPAL ---
     const navLinks = document.querySelectorAll('.nav-link');
     const pages = document.querySelectorAll('.page');
 
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
-            // Verifica se o link tem o atributo target="_blank"
+            // Verifica se o link DEVE abrir em uma nova aba
             if (link.getAttribute('target') === '_blank') {
-                // Se tiver, permite o comportamento padrão e sai da função
-                return;
+                // Se sim, não faz nada aqui; o navegador cuidará disso.
+                // O preventDefault() não é necessário para esses links.
+                return; 
             }
 
+            // Se o link NÃO é para abrir em nova aba (target="_blank"), 
+            // então aplicamos o comportamento de navegação interna.
             e.preventDefault();
 
-            // Remove a classe 'active' de todos
+            // Remove a classe 'active' de todos os links e páginas
             navLinks.forEach(l => l.classList.remove('active'));
             pages.forEach(p => p.classList.remove('active'));
 
             // Adiciona a classe 'active' ao link clicado e à página correspondente
             link.classList.add('active');
             const targetPage = document.querySelector(link.getAttribute('href'));
-            targetPage.classList.add('active');
-        });
-    });
-
-    // ... o restante do seu código JavaScript continua aqui ...
+            if (targetPage) { // Garante que o elemento de página existe
+                targetPage.classList.add('active');
+            }
         });
     });
 
     // --- 1. MÓDULO DE RESPIRAÇÃO ---
+    // ... (todo o resto do seu código JavaScript permanece igual) ...
     const circleContainer = document.querySelector('.breathing-circle-container');
     const circle = document.querySelector('.breathing-circle');
     const breathText = document.querySelector('.breathing-text');
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
         verseRef.textContent = `- ${bibleVerses[randomIndex].ref}`;
     }
 
-    generateVerseBtn.addEventListener('click', getRandomVerse);
+    if (generateVerseBtn) generateVerseBtn.addEventListener('click', getRandomVerse);
     getRandomVerse(); // Gera um versículo ao carregar a página
 
     // --- MODAL / POP-UP ---
@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
             openModal(btn.dataset.title, btn.dataset.text);
         });
     });
-    closeBtn.addEventListener('click', closeModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
     window.addEventListener('click', (e) => {
         if (e.target == modal) {
             closeModal();
@@ -152,16 +152,17 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const savedMood = localStorage.getItem('selectedMood');
         if(savedMood) {
-            document.querySelector(`.mood-option[data-mood="${savedMood}"]`).classList.add('selected');
+            const selectedMoodElement = document.querySelector(`.mood-option[data-mood="${savedMood}"]`);
+            if(selectedMoodElement) selectedMoodElement.classList.add('selected');
         }
     }
     loadJournalData();
 
     // 3.4 - Salvar dados do diário ao digitar
-    journalTextarea.addEventListener('keyup', () => {
+    if (journalTextarea) journalTextarea.addEventListener('keyup', () => {
         localStorage.setItem('journalEntry', journalTextarea.value);
     });
-    journalTitleInput.addEventListener('keyup', () => {
+    if (journalTitleInput) journalTitleInput.addEventListener('keyup', () => {
         localStorage.setItem('journalTitle', journalTitleInput.value);
     });
 
@@ -181,15 +182,17 @@ document.addEventListener('DOMContentLoaded', () => {
         "Planeje uma refeição saudável."
     ];
 
-    for (let i = 1; i <= 31; i++) {
-        const day = document.createElement('div');
-        day.classList.add('calendar-day');
-        day.textContent = i;
-        day.addEventListener('click', () => {
-            const randomActivity = healthyActivities[Math.floor(Math.random() * healthyActivities.length)];
-            openModal(`Atividade para o dia ${i}`, randomActivity);
-        });
-        calendarGrid.appendChild(day);
+    if (calendarGrid) {
+        for (let i = 1; i <= 31; i++) {
+            const day = document.createElement('div');
+            day.classList.add('calendar-day');
+            day.textContent = i;
+            day.addEventListener('click', () => {
+                const randomActivity = healthyActivities[Math.floor(Math.random() * healthyActivities.length)];
+                openModal(`Atividade para o dia ${i}`, randomActivity);
+            });
+            calendarGrid.appendChild(day);
+        }
     }
 
     // --- 5. MÓDULO CHECKLIST ---
@@ -205,6 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let userChecklist = JSON.parse(localStorage.getItem('userChecklist')) || checklistItems;
 
     function renderChecklist() {
+        if (!checklistList) return; // Sai se o elemento não existir
         checklistList.innerHTML = '';
         userChecklist.forEach((item, index) => {
             const li = document.createElement('li');
@@ -217,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    checklistList.addEventListener('click', (e) => {
+    if (checklistList) checklistList.addEventListener('click', (e) => {
         if (e.target.type === 'checkbox') {
             const index = e.target.dataset.index;
             userChecklist[index].completed = !userChecklist[index].completed;
@@ -236,15 +240,17 @@ document.addEventListener('DOMContentLoaded', () => {
     function loadPlaylist() {
         const savedLink = localStorage.getItem('playlistLink');
         if (savedLink) {
-            playlistInput.value = savedLink;
+            if (playlistInput) playlistInput.value = savedLink;
             embedPlaylist(savedLink);
         }
     }
 
     function embedPlaylist(link) {
+        if (!playerContainer) return; // Sai se o container não existir
+
         let embedUrl = '';
-        if (link.includes('spotify.com/playlist')) {
-            const playlistId = new URL(link).pathname.split('/').pop();
+        if (link.includes('open.spotify.com/playlist')) { // Ajuste para URL Spotify mais comum
+            const playlistId = link.split('/playlist/')[1].split('?')[0]; // Pega o ID correto
             embedUrl = `https://open.spotify.com/embed/playlist/${playlistId}`;
         } else if (link.includes('youtube.com/playlist')) {
             const listId = new URL(link).searchParams.get('list');
@@ -252,21 +258,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (embedUrl) {
-            playerContainer.innerHTML = `<iframe src="${embedUrl}" allow="encrypted-media"></iframe>`;
+            playerContainer.innerHTML = `<iframe src="${embedUrl}" width="100%" height="352" frameborder="0" allow="encrypted-media" allowfullscreen></iframe>`;
         } else {
             playerContainer.innerHTML = `<p>Link inválido ou não suportado. Tente um link de playlist do Spotify ou YouTube.</p>`;
         }
     }
 
-    savePlaylistBtn.addEventListener('click', () => {
-        const link = playlistInput.value;
-        if (link) {
-            localStorage.setItem('playlistLink', link);
-            embedPlaylist(link);
-        }
-    });
+    if (savePlaylistBtn && playlistInput) {
+        savePlaylistBtn.addEventListener('click', () => {
+            const link = playlistInput.value;
+            if (link) {
+                localStorage.setItem('playlistLink', link);
+                embedPlaylist(link);
+            }
+        });
+    }
 
     loadPlaylist();
 
 });
-
