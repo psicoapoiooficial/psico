@@ -360,8 +360,9 @@ button:hover {
 
  .mood-options {
     display: flex;
-    justify-content: space-between; /* Distribui os emojis uniformemente */
-    flex-wrap: nowrap; /* Impede que os emojis quebrem a linha */
+    justify-content: center; /* Centraliza os emojis */
+    flex-wrap: wrap;         /* PERMITE QUE OS ITENS QUEBREM A LINHA */
+    gap: 15px;               /* Adiciona um espaço entre os emojis */
     text-align: center;
 }
 
@@ -441,4 +442,5 @@ button:hover {
 #journal-textarea:focus {
     outline: none;
 }
+
 
