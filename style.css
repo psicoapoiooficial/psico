@@ -359,9 +359,10 @@ button:hover {
 }
 
 .mood-options {
-    display: flex;
-    justify-content: space-around;
-    text-align: center;
+  display: flex;          /* Establishes the container as a flex container */
+  justify-content: space-around; /* Distributes space around items */
+  text-align: center;     /* Centers text within items */
+  flex-wrap: wrap;        /* Allows items to wrap onto multiple lines */
 }
 
 .mood-option {
@@ -440,3 +441,4 @@ button:hover {
 #journal-textarea:focus {
     outline: none;
 }
+
