@@ -443,7 +443,7 @@ button:hover {
     outline: none;
 }
 /* Ajustes para celulares pequenos */
-@media (max-width: 400px) {
+@media (max-width: 500px) {
     .mood-option .emoji {
         font-size: 2rem;
         width: 45px;
@@ -454,5 +454,6 @@ button:hover {
         font-size: 0.8rem;
     }
 }
+
 
 
