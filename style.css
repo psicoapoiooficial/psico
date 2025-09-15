@@ -359,10 +359,10 @@ button:hover {
 }
 
 .mood-options {
+   .mood-options {
     display: flex;
-    justify-content: center; /* Centraliza os emojis */
-    flex-wrap: wrap;         /* PERMITE QUE OS ITENS QUEBREM A LINHA */
-    gap: 15px;               /* Adiciona um espaço entre os emojis */
+    justify-content: space-between; /* Distribui os emojis uniformemente */
+    flex-wrap: nowrap; /* Impede que os emojis quebrem a linha */
     text-align: center;
 }
 
@@ -442,3 +442,4 @@ button:hover {
 #journal-textarea:focus {
     outline: none;
 }
+
