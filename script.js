@@ -1,11 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+   document.addEventListener('DOMContentLoaded', () => {
+
     // --- NAVEGAÇÃO PRINCIPAL ---
     const navLinks = document.querySelectorAll('.nav-link');
     const pages = document.querySelectorAll('.page');
 
     navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
+            // Verifica se o link tem o atributo target="_blank"
+            if (link.getAttribute('target') === '_blank') {
+                // Se tiver, permite o comportamento padrão e sai da função
+                return;
+            }
+
             e.preventDefault();
 
             // Remove a classe 'active' de todos
@@ -16,6 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
             link.classList.add('active');
             const targetPage = document.querySelector(link.getAttribute('href'));
             targetPage.classList.add('active');
+        });
+    });
+
+    // ... o restante do seu código JavaScript continua aqui ...
         });
     });
 
@@ -257,3 +269,4 @@ document.addEventListener('DOMContentLoaded', () => {
     loadPlaylist();
 
 });
+
