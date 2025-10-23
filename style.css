@@ -125,54 +125,7 @@ body {
     }
 }
 
-/* --- ESTILOS DOS COMPONENTES --- */
 
-/* 1. Respiração */
-.breathing-circle-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 300px;
-    position: relative;
-    margin-top: 2rem;
-}
-
-.breathing-circle {
-    width: 150px;
-    height: 150px;
-    background: linear-gradient(135deg, var(--secondary-blue), var(--primary-blue));
-    border-radius: 50%;
-    transition: transform 4s ease-in-out;
-}
-
-.breathing-text {
-    position: absolute;
-    color: var(--light-text);
-    font-size: 1.5rem;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-/* Animação da Respiração */
-@keyframes grow {
-    from {
-        transform: scale(1);
-    }
-
-    to {
-        transform: scale(1.8);
-    }
-}
-
-@keyframes shrink {
-    from {
-        transform: scale(1.8);
-    }
-
-    to {
-        transform: scale(1);
-    }
-}
 
 /* 2. Bíblia */
 .bible-verse-container {
@@ -441,4 +394,5 @@ button:hover {
 #journal-textarea:focus {
     outline: none;
 }
+
 
