@@ -32,39 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ... (todo o código dos módulos de respiração, bíblia, diário, etc.)
 
     // --- 1. MÓDULO DE RESPIRAÇÃO ---
-    const circleContainer = document.querySelector('.breathing-circle-container');
-    const circle = document.querySelector('.breathing-circle');
-    const breathText = document.querySelector('.breathing-text');
-    let isBreathing = false;
-
-    if (circleContainer) {
-        circleContainer.addEventListener('click', () => {
-            if (!isBreathing) {
-                startBreathing();
-            }
-        });
-    }
-
-    function startBreathing() {
-        isBreathing = true;
-        breathText.textContent = "Inspire...";
-        circle.style.animation = 'grow 4s ease-in-out forwards';
-
-        setTimeout(() => {
-            breathText.textContent = "Segure";
-        }, 4000);
-
-        setTimeout(() => {
-            breathText.textContent = "Expire...";
-            circle.style.animation = 'shrink 6s ease-in-out forwards';
-        }, 6000);
-
-        setTimeout(() => {
-            isBreathing = false;
-            breathText.textContent = "Começar";
-            circle.style.animation = 'none';
-        }, 12000);
-    }
+    
 
     // --- 2. MÓDULO BÍBLICO ---
     const verseText = document.getElementById('daily-verse-text');
@@ -281,3 +249,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadPlaylist();
 });
+
