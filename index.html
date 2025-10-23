@@ -26,15 +26,383 @@
             </ul>
         </nav>
 
-        <main class="content">
-            <section id="respiracao" class="page active">
-                <h2>Respire Fundo e Relaxe</h2>
-                <p>Sincronize sua respiração com a animação. Inspire quando o círculo crescer, segure e expire quando ele diminuir.</p>
-                <div class="breathing-circle-container">
-                    <div class="breathing-circle"></div>
-                    <p class="breathing-text">Começar</p>
+       <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PsicoApoio - Exercícios de Respiração</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background-color: #4a6fa5;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .header h2 {
+            font-size: 18px;
+            font-weight: 400;
+            margin-bottom: 10px;
+        }
+        
+        .header h3 {
+            font-size: 16px;
+            font-weight: 300;
+            margin-bottom: 5px;
+        }
+        
+        .divider {
+            height: 2px;
+            background-color: rgba(255, 255, 255, 0.3);
+            margin: 10px 0;
+        }
+        
+        .breathing-container {
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .breathing-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #e8f4f8;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .circle-inner {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: #4a6fa5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            transition: all 4s ease-in-out;
+        }
+        
+        .circle-text {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .circle-subtext {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .instructions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .instruction-box {
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .instruction-title {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .instruction-value {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .timer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+        
+        .timer-text {
+            font-size: 18px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background-color: #e0e0e0;
+            border-radius: 3px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: #4a6fa5;
+            width: 0%;
+            transition: width 1s linear;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .control-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4a6fa5;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .control-btn:hover {
+            background-color: #3a5a85;
+        }
+        
+        .control-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .paused {
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>PsicoApoio</h1>
+            <h2>Exercícios de Respiração</h2>
+            <h3>Inspire... 4</h3>
+            <div class="divider"></div>
+        </div>
+        
+        <div class="breathing-container">
+            <div class="breathing-circle">
+                <div class="circle-inner">
+                    <div class="circle-text">Inspire</div>
+                    <div class="circle-subtext">4 segundos</div>
                 </div>
-            </section>
+            </div>
+            
+            <div class="instructions">
+                <div class="instruction-box">
+                    <div class="instruction-title">Inspire:</div>
+                    <div class="instruction-value">4 segundos</div>
+                </div>
+                <div class="instruction-box">
+                    <div class="instruction-title">Segure:</div>
+                    <div class="instruction-value">7 segundos</div>
+                </div>
+                <div class="instruction-box">
+                    <div class="instruction-title">Pausa:</div>
+                    <div class="instruction-value">2 segundos</div>
+                </div>
+                <div class="instruction-box">
+                    <div class="instruction-title">Expire:</div>
+                    <div class="instruction-value">8 segundos</div>
+                </div>
+            </div>
+            
+            <div class="timer">
+                <div class="timer-text">02:45 / 05:00</div>
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
+            
+            <div class="controls">
+                <button class="control-btn" id="startBtn">Iniciar</button>
+                <button class="control-btn" id="pauseBtn" disabled>Pausar</button>
+                <button class="control-btn" id="resetBtn">Reiniciar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const circleInner = document.querySelector('.circle-inner');
+            const circleText = document.querySelector('.circle-text');
+            const circleSubtext = document.querySelector('.circle-subtext');
+            const timerText = document.querySelector('.timer-text');
+            const progressBar = document.querySelector('.progress');
+            const startBtn = document.getElementById('startBtn');
+            const pauseBtn = document.getElementById('pauseBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            
+            let animationInterval;
+            let isPaused = false;
+            let currentPhase = 0;
+            let currentTime = 0;
+            let totalTime = 0;
+            let totalDuration = 300; // 5 minutos em segundos
+            
+            const phases = [
+                { name: "Inspire", duration: 4, text: "Inspire", subtext: "4 segundos", color: "#4a6fa5" },
+                { name: "Segure", duration: 7, text: "Segure", subtext: "7 segundos", color: "#5a7fb5" },
+                { name: "Pausa", duration: 2, text: "Pausa", subtext: "2 segundos", color: "#6a8fc5" },
+                { name: "Expire", duration: 8, text: "Expire", subtext: "8 segundos", color: "#7a9fd5" }
+            ];
+            
+            function startAnimation() {
+                if (animationInterval) return;
+                
+                startBtn.disabled = true;
+                pauseBtn.disabled = false;
+                isPaused = false;
+                
+                animationInterval = setInterval(updateAnimation, 1000);
+            }
+            
+            function pauseAnimation() {
+                if (!animationInterval) return;
+                
+                clearInterval(animationInterval);
+                animationInterval = null;
+                isPaused = true;
+                
+                startBtn.disabled = false;
+                pauseBtn.disabled = true;
+                
+                circleInner.style.opacity = "0.7";
+            }
+            
+            function resetAnimation() {
+                clearInterval(animationInterval);
+                animationInterval = null;
+                isPaused = false;
+                currentPhase = 0;
+                currentTime = 0;
+                totalTime = 0;
+                
+                startBtn.disabled = false;
+                pauseBtn.disabled = true;
+                
+                updateDisplay();
+                circleInner.style.opacity = "1";
+                circleInner.style.transform = "scale(1)";
+                circleInner.style.backgroundColor = phases[0].color;
+                progressBar.style.width = "0%";
+            }
+            
+            function updateAnimation() {
+                if (isPaused) return;
+                
+                currentTime++;
+                totalTime++;
+                
+                // Atualizar a barra de progresso
+                const progressPercentage = (totalTime / totalDuration) * 100;
+                progressBar.style.width = `${Math.min(progressPercentage, 100)}%`;
+                
+                // Atualizar o temporizador
+                const minutes = Math.floor(totalTime / 60);
+                const seconds = totalTime % 60;
+                timerText.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} / 05:00`;
+                
+                // Verificar se a fase atual terminou
+                if (currentTime >= phases[currentPhase].duration) {
+                    currentTime = 0;
+                    currentPhase = (currentPhase + 1) % phases.length;
+                    updateDisplay();
+                    
+                    // Reiniciar a animação quando completar um ciclo
+                    if (currentPhase === 0) {
+                        circleInner.style.transform = "scale(1)";
+                    }
+                }
+                
+                // Animar o círculo baseado na fase atual
+                animateCircle();
+            }
+            
+            function animateCircle() {
+                const phase = phases[currentPhase];
+                const progress = currentTime / phase.duration;
+                
+                if (phase.name === "Inspire") {
+                    // Expandir durante a inspiração
+                    const scale = 1 + progress * 0.5;
+                    circleInner.style.transform = `scale(${scale})`;
+                } else if (phase.name === "Expire") {
+                    // Contrair durante a expiração
+                    const scale = 1.5 - progress * 0.5;
+                    circleInner.style.transform = `scale(${scale})`;
+                }
+                
+                // Mudar a cor gradualmente
+                circleInner.style.backgroundColor = phase.color;
+            }
+            
+            function updateDisplay() {
+                const phase = phases[currentPhase];
+                circleText.textContent = phase.text;
+                circleSubtext.textContent = phase.subtext;
+            }
+            
+            // Event listeners
+            startBtn.addEventListener('click', startAnimation);
+            pauseBtn.addEventListener('click', pauseAnimation);
+            resetBtn.addEventListener('click', resetAnimation);
+            
+            // Inicializar a exibição
+            updateDisplay();
+        });
+    </script>
+</body>
+</html>
 
             <section id="biblia" class="page">
                 <h2>Palavra de Força e Esperança</h2>
@@ -104,4 +472,5 @@
     <script src="script.js"></script>
 </body>
 </html>
+
 
